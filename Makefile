@@ -1,27 +1,27 @@
-CPP = gcc
+CPP = g++
 
 TARGET	= fpv_rx
 
-DIR		= ./receiver
+DIR		= ./receiver ./ffmpeg ./ringbuf
 
-INC		+= -I./receiver
+INC		+= -I./receiver -I./ringbuf -I./ffmpeg -I./include
 
-LDFLAGS += -lpthread -ldl -lm -lrt -lpcap
+LDFLAGS += -L./lib -lavformat -lavcodec -lavutil -lswscale -lswresample -lSDL2 -lpthread -ldl -lm -lrt -lpcap -lz
 CFLAGS	= -g -Wall
 
 OBJPATH	= ./objs
 
-FILES	= $(foreach dir,$(DIR),$(wildcard $(dir)/*.c))
+FILES	= $(foreach dir,$(DIR),$(wildcard $(dir)/*.cpp))
 
-OBJS	= $(patsubst %.c,%.o,$(FILES))
+OBJS	= $(patsubst %.cpp,%.o,$(FILES))
 
 all:$(OBJS) $(TARGET)
 
-$(OBJS):%.o:%.c
+$(OBJS):%.o:%.cpp
 	$(CPP) $(CFLAGS) $(INC) -c -o $(OBJPATH)/$(notdir $@) $< 
 
 $(TARGET):$(OBJPATH)
-	$(CPP) -o $@ $(OBJPATH)/*.o $(LDFLAGS)
+	$(CPP) -o $@ $(OBJPATH)/*.o $(LDFLAGS) `sdl2-config --cflags --libs`
 
 #$(OBJPATH):
 #	mkdir -p $(OBJPATH)
