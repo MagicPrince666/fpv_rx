@@ -1,0 +1,3 @@
+objs/*.o
+fpv_rx
+lib/*.a
