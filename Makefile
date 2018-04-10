@@ -6,8 +6,10 @@ DIR		= ./receiver ./ffmpeg ./ringbuf
 
 INC		+= -I./receiver -I./ringbuf -I./ffmpeg -I/usr/local/include
 
-LDFLAGS += -lavformat -lavcodec -lavutil -lswscale -lswresample -lx264 -lSDL2 -lpthread -ldl -lm -lrt -lpcap -lz
-CFLAGS	= -g -Wall
+FFMPEGDIR = ../ffmpeg
+FFMPEGLIB = -L$(FFMPEGDIR)/libavformat -L$(FFMPEGDIR)/libavcodec -L$(FFMPEGDIR)/libavutil -L$(FFMPEGDIR)/libswscale -L$(FFMPEGDIR)/libswresample
+LDFLAGS += $(FFMPEGLIB) -lavformat -lavcodec -lavutil -lswscale -lswresample -lx264 -lSDL2 -lpthread -ldl -lm -lrt -lpcap -lz
+CFLAGS	= -O3 -g -Wall
 
 OBJPATH	= ./objs
 
