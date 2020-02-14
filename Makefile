@@ -4,11 +4,11 @@ TARGET	= fpv_rx
 
 DIR		= ./receiver ./ffmpeg ./ringbuf
 
-INC		+= -I./receiver -I./ringbuf -I./ffmpeg -I/usr/local/include
+INC		+= -I./receiver -I./ringbuf -I../FFmpeg -I./ffmpeg -I/usr/local/include
 
-FFMPEGDIR = ../ffmpeg
+FFMPEGDIR = ../FFmpeg
 FFMPEGLIB = -L$(FFMPEGDIR)/libavformat -L$(FFMPEGDIR)/libavcodec -L$(FFMPEGDIR)/libavutil -L$(FFMPEGDIR)/libswscale -L$(FFMPEGDIR)/libswresample
-LDFLAGS += $(FFMPEGLIB) -lavformat -lavcodec -lavutil -lswscale -lswresample -lx264 -lSDL2 -lpthread -ldl -lm -lrt -lpcap -lz
+LDFLAGS += $(FFMPEGLIB) -lavformat -lavcodec -lavutil -lswscale -lswresample -lSDL2 -lpthread -ldl -lm -lrt -lpcap -lz
 CFLAGS	= -O3 -g -Wall
 
 OBJPATH	= ./objs
