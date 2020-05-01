@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WLAN=wlx0013ef60052d
+WLAN=wlp8s0
 
 ifconfig $WLAN down
 iw dev $WLAN set monitor otherbss fcsfail

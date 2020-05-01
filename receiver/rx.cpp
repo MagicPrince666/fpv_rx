@@ -15,6 +15,31 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/*******************************************\
+                   _ooOoo_
+                  o8888888o
+                  88" . "88
+                  (| -_- |)
+                  O\  =  /O
+               ____/`---'\____
+             .'  \\|     |//  `.
+            /  \\|||  :  |||//  \
+           /  _||||| -:- |||||-  \
+           |   | \\\  -  /// |   |
+           | \_|  ''\---/''  |   |
+           \  .-\__  `-`  ___/-. /
+         ___`. .'  /--.--\  `. . __
+      ."" '<  `.___\_<|>_/___.'  >'"".
+     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+     \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+                   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           一盏青灯伴古佛 半为修行半入魔
+
+           佛祖保佑   小王子   永无BUG
+
+\********************************************/
 
 #include "fec.h"
 
@@ -572,13 +597,9 @@ int num_interfaces = 0;
 
 void *Receive_Thread(void *arg)
 {
-	
 	int i;
 
     block_buffer_t *block_buffer_list;
-
-	
-
 
     //block buffers contain both the block_num as well as packet buffers for a block.
     block_buffer_list = (block_buffer_t*)malloc(sizeof(block_buffer_t) * param_block_buffers);
@@ -587,7 +608,6 @@ void *Receive_Thread(void *arg)
         block_buffer_list[i].block_num = -1;
         block_buffer_list[i].packet_buffer_list = lib_alloc_packet_buffer_list(param_data_packets_per_block+param_fec_packets_per_block, MAX_PACKET_LENGTH);
 	}
-
 
 	rx_status = status_memory_open();
 	rx_status->wifi_adapter_cnt = num_interfaces;
@@ -598,7 +618,7 @@ void *Receive_Thread(void *arg)
 
 		to.tv_sec = 0;
 		to.tv_usec = 1e5;
-	
+
 		FD_ZERO(&readset);
 		for(i=0; i<num_interfaces; ++i)
 			FD_SET(interfaces[i].selectable_fd, &readset);
@@ -613,10 +633,11 @@ void *Receive_Thread(void *arg)
                 process_packet(interfaces + i, block_buffer_list, i);
 			}
 		}
-
 	}
 	pthread_exit(NULL);
 }
+
+#define VIDEO_DECODE 1
 
 int main(int argc, char *argv[])
 {
@@ -689,16 +710,19 @@ int main(int argc, char *argv[])
 
 	if(pthread_create(&thread[0], NULL, Receive_Thread, NULL) != 0)   
         printf("Receive_Thread create fail!\n");
-    if(pthread_create(&thread[1], NULL, video_decoder_Thread, NULL) != 0)  
+#if VIDEO_DECODE
+    if(pthread_create(&thread[1], NULL, video_decoder_Thread, NULL) != 0)
         printf("video_decoder_Thread create fail!\n");
-	
+#endif
 
 	if(thread[0] !=0) {  
 		pthread_join(thread[0],NULL);
 	}
-	if(thread[1] !=0) {   
+#if VIDEO_DECODE
+	if(thread[1] !=0) {
 		pthread_join(thread[1],NULL);
 	}
+#endif
 
 	RingBuffer_destroy(rbuf);
 	return (0);

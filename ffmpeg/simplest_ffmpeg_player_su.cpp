@@ -37,7 +37,7 @@ int sfp_refresh_thread(void *opaque){
 			event.type = SFM_REFRESH_EVENT;
 			SDL_PushEvent(&event);
 		}
-		SDL_Delay(40);
+		SDL_Delay(33);
 	}
 	thread_exit=0;
 	thread_pause=0;

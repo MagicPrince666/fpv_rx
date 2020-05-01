@@ -1,8 +1,9 @@
 #!/bin/bash
 
-WLANS=$@
-#BAND="5G"
-BAND="2G"
+#WLANS=$@
+WLANS=wlp8s0
+BAND="5G"
+#BAND="2G"
 
 CHANNEL2G="6"
 CHANNEL5G="149"
@@ -32,4 +33,4 @@ case $BAND in
 esac
 done
 
-./rx $WLANS
+./fpv_rx $WLANS

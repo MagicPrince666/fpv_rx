@@ -25,8 +25,6 @@ $(OBJS):%.o:%.cpp
 $(TARGET):$(OBJPATH)
 	$(CPP) -o $@ $(OBJPATH)/*.o $(LDFLAGS) `sdl2-config --cflags --libs`
 
-#$(OBJPATH):
-#	mkdir -p $(OBJPATH)
 
 clean:
 	-rm -f $(OBJPATH)/*.o
